@@ -1,0 +1,19 @@
+{
+	admin off
+	auto_https off
+	persist_config off
+}
+
+:7860 {
+	basic_auth {
+		{env.DSH_AUTH_USER} {env.DSH_AUTH_HASH}
+	}
+
+	reverse_proxy 127.0.0.1:3080 {
+		header_up Host 127.0.0.1:3080
+		header_up Origin http://127.0.0.1:3080
+
+		header_up -Referer
+		header_up -Authorization
+	}
+}
