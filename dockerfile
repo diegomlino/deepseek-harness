@@ -8,5 +8,5 @@ RUN mkdir -p /root/.dsh
 
 EXPOSE 3080
 
-# Adicione --no-open para evitar tentativa de abrir navegador
-CMD ["sh", "-c", "dsh web --host 127.0.0.1 --port 3080 --no-open"]
+# Usa 0.0.0.0 para aceitar conexões externas
+CMD ["sh", "-c", "dsh web --host 0.0.0.0 --port 3080 --no-open"]
