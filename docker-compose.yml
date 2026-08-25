@@ -8,11 +8,12 @@ services:
 
     environment:
       TZ: America/Sao_Paulo
-      DSH_HOME: /data/dsh
-      PORT: "7860"
 
-      # Autoriza o domínio público usado pelo navegador
-      DSH_TRUSTED_HOSTS: "deepseek.iaengenharia.ia.br"
+      DSH_HOME: /data/dsh
+
+      # Definidos no Environment do Dokploy
+      DSH_AUTH_USER: "${DSH_AUTH_USER}"
+      DSH_AUTH_PASSWORD: "${DSH_AUTH_PASSWORD}"
 
     expose:
       - "7860"
