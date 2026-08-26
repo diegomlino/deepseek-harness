@@ -5,28 +5,13 @@
 }
 
 :7860 {
-	# Autenticação (opcional)
 	basic_auth {
 		{env.GATEWAY_AUTH_USER} {env.GATEWAY_AUTH_HASH}
-	}
-
-	# Configurações de timeout
-	timeouts {
-		read 0
-		write 0
-		idle 5m
 	}
 
 	reverse_proxy 127.0.0.1:3080 {
 		# ESSENCIAL para SSE/streaming
 		flush_interval -1
-		
-		# Transporte sem timeouts
-		transport http {
-			read_timeout 0
-			write_timeout 0
-			response_header_timeout 0
-		}
 		
 		# Headers de upstream
 		header_up Host {host}
