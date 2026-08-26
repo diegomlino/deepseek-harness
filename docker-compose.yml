@@ -10,6 +10,8 @@ services:
       TZ: America/Sao_Paulo
       DSH_HOME: /data/dsh
 
+      PUBLIC_HOST: "${PUBLIC_HOST}"
+
       GATEWAY_AUTH_USER: "${GATEWAY_AUTH_USER}"
       GATEWAY_AUTH_PASSWORD: "${GATEWAY_AUTH_PASSWORD}"
 
