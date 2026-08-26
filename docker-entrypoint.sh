@@ -2,20 +2,23 @@
 
 set -Eeuo pipefail
 
-if [[ -z "${DSH_AUTH_USER:-}" ]]; then
-    echo "ERRO: DSH_AUTH_USER não configurado."
+if [[ -z "${GATEWAY_AUTH_USER:-}" ]]; then
+    echo "ERRO: GATEWAY_AUTH_USER não configurado."
     exit 1
 fi
 
-if [[ -z "${DSH_AUTH_PASSWORD:-}" ]]; then
-    echo "ERRO: DSH_AUTH_PASSWORD não configurado."
+if [[ -z "${GATEWAY_AUTH_PASSWORD:-}" ]]; then
+    echo "ERRO: GATEWAY_AUTH_PASSWORD não configurado."
     exit 1
 fi
 
-# Gera hash bcrypt da senha em memória.
-# A senha em texto puro não é gravada no Caddyfile.
-export DSH_AUTH_HASH
-DSH_AUTH_HASH="$(caddy hash-password --plaintext "${DSH_AUTH_PASSWORD}")"
+# Gera o hash bcrypt usado pelo Caddy
+export GATEWAY_AUTH_HASH
+GATEWAY_AUTH_HASH="$(caddy hash-password --plaintext "${GATEWAY_AUTH_PASSWORD}")"
+
+# A senha em texto puro não precisa ser herdada
+# pelos processos DSH e Caddy.
+unset GATEWAY_AUTH_PASSWORD
 
 cleanup() {
     kill "${DSH_PID:-}" "${CADDY_PID:-}" 2>/dev/null || true
