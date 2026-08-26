@@ -5,13 +5,46 @@
 }
 
 :7860 {
+	# Autenticação (opcional)
 	basic_auth {
 		{env.GATEWAY_AUTH_USER} {env.GATEWAY_AUTH_HASH}
 	}
 
+	# Configurações de timeout
+	timeouts {
+		read 0
+		write 0
+		idle 5m
+	}
+
 	reverse_proxy 127.0.0.1:3080 {
-		header_up Host 127.0.0.1:3080
-		header_up Origin http://127.0.0.1:3080
+		# ESSENCIAL para SSE/streaming
+		flush_interval -1
+		
+		# Transporte sem timeouts
+		transport http {
+			read_timeout 0
+			write_timeout 0
+			response_header_timeout 0
+		}
+		
+		# Headers de upstream
+		header_up Host {host}
+		header_up X-Real-IP {remote_host}
+		header_up X-Forwarded-For {remote_host}
+		header_up X-Forwarded-Proto {scheme}
+		header_up X-Forwarded-Host {host}
+		
+		# Manter cookies/sessão
+		header_up Cookie {http.request.header.Cookie}
+		
+		# CORS para storage/localStorage
+		header_down Access-Control-Allow-Origin "*"
+		header_down Access-Control-Allow-Credentials "true"
+		header_down Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+		header_down Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With, Accept"
+		
+		# Remover headers problemáticos
 		header_up -Referer
 		header_up -Authorization
 	}
