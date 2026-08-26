@@ -34,5 +34,4 @@ ENV NODE_ENV=production
 ENV DSH_HOME=/data/dsh
 
 EXPOSE 7860
-
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
