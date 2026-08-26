@@ -5,20 +5,22 @@
 }
 
 :7860 {
+	basic_auth {
+		{$GATEWAY_AUTH_USER} {$GATEWAY_AUTH_HASH}
+	}
+
 	reverse_proxy 127.0.0.1:3080 {
-		flush_interval -1
-		
-		header_up Host {host}
-		header_up X-Real-IP {remote_host}
-		header_up X-Forwarded-For {remote_host}
-		header_up X-Forwarded-Proto {scheme}
-		
-		header_down Access-Control-Allow-Origin "*"
-		header_down Access-Control-Allow-Credentials "true"
-		header_down Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
-		header_down Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
-		
-		header_up -Referer
+		# Preserva exatamente o Host usado pelo navegador.
+		#
+		# Público:
+		# deepseek.iaengenharia.ia.br
+		#
+		# Túnel SSH:
+		# 127.0.0.1:7860
+		header_up Host {hostport}
+
+		# A autenticação Basic pertence somente ao Caddy.
+		# Não encaminhar Authorization ao Harness.
 		header_up -Authorization
 	}
 }
