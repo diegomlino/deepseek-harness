@@ -16,6 +16,9 @@ services:
     expose:
       - "7860"
 
+    ports:
+      - "127.0.0.1:7860:7860"
+
     volumes:
       - harness-data:/data/dsh
       - harness-workspace:/workspace
