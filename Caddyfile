@@ -5,15 +5,6 @@
 }
 
 :7860 {
-	# Proteger apenas a interface web, não as APIs
-	@auth {
-		not path /api/*
-	}
-	
-	basic_auth @auth {
-		{env.GATEWAY_AUTH_USER} {env.GATEWAY_AUTH_HASH}
-	}
-
 	reverse_proxy 127.0.0.1:3080 {
 		flush_interval -1
 		
@@ -21,14 +12,11 @@
 		header_up X-Real-IP {remote_host}
 		header_up X-Forwarded-For {remote_host}
 		header_up X-Forwarded-Proto {scheme}
-		header_up X-Forwarded-Host {host}
-		
-		header_up Cookie {http.request.header.Cookie}
 		
 		header_down Access-Control-Allow-Origin "*"
 		header_down Access-Control-Allow-Credentials "true"
 		header_down Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
-		header_down Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With, Accept"
+		header_down Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
 		
 		header_up -Referer
 		header_up -Authorization
