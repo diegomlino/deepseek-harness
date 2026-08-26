@@ -8,12 +8,10 @@ services:
 
     environment:
       TZ: America/Sao_Paulo
-
       DSH_HOME: /data/dsh
 
-      # Definidos no Environment do Dokploy
-      DSH_AUTH_USER: "${DSH_AUTH_USER}"
-      DSH_AUTH_PASSWORD: "${DSH_AUTH_PASSWORD}"
+      GATEWAY_AUTH_USER: "${GATEWAY_AUTH_USER}"
+      GATEWAY_AUTH_PASSWORD: "${GATEWAY_AUTH_PASSWORD}"
 
     expose:
       - "7860"
